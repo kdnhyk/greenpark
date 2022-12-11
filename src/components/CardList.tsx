@@ -19,7 +19,7 @@ const CardListBlock = styled.div<CardListProps>`
   margin-left: ${({ currentIndex }) => `-${currentIndex * 320}px`};
   /* transform: ${({ currentIndex }) =>
     `translateX(-${currentIndex * 320}px)`}; */
-  transition: margin 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 `;
 
 export default function CardList({ documents }: any) {
@@ -44,12 +44,39 @@ export default function CardList({ documents }: any) {
     const distanceY = tochedY - e.changedTouches[0].pageY;
     const vector = Math.abs(distanceX / distanceY);
 
-    if (distanceX > 30 && vector > 2) {
+    if (distanceX > 10 && vector > 2) {
       handleNextBtn();
-    } else if (distanceX < -30 && vector > 2) {
+    } else if (distanceX < -10 && vector > 2) {
       handlePrevBtn();
     }
   };
+
+  const [mouseDownClientX, setMouseDownClientX] = useState(0);
+  const [mouseDownClientY, setMouseDownClientY] = useState(0);
+  const [mouseUpClientX, setMouseUpClientX] = useState(0);
+  const [mouseUpClientY, setMouseUpClientY] = useState(0);
+
+  const onMouseDown = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setMouseDownClientX(e.clientX);
+    setMouseDownClientY(e.clientY);
+  };
+  const onMouseUp = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setMouseUpClientX(e.clientX);
+    setMouseUpClientY(e.clientY);
+  };
+  useEffect(() => {
+    const dragSpaceX = Math.abs(mouseDownClientX - mouseUpClientX);
+    const dragSpaceY = Math.abs(mouseDownClientY - mouseUpClientY);
+    const vector = dragSpaceX / dragSpaceY;
+
+    if (mouseDownClientX !== 0 && dragSpaceX > 10 && vector > 2) {
+      if (mouseUpClientX < mouseDownClientX) {
+        handleNextBtn();
+      } else if (mouseUpClientX > mouseDownClientX) {
+        handlePrevBtn();
+      }
+    }
+  }, [mouseUpClientX]);
 
   const handleNextBtn = () => {
     console.log("prevIndex:" + currentIndex);
@@ -65,9 +92,9 @@ export default function CardList({ documents }: any) {
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = window.innerWidth;
-    if (e.clientX - width / 2 >= 160) {
+    if (e.clientX - width / 2 >= 150) {
       handleNextBtn();
-    } else if (e.clientX - width / 2 <= -160) {
+    } else if (e.clientX - width / 2 <= -150) {
       handlePrevBtn();
     }
   };
@@ -77,6 +104,8 @@ export default function CardList({ documents }: any) {
       currentIndex={currentIndex}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
       onClick={onClick}
     >
       <Card />
