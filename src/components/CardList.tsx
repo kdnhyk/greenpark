@@ -4,11 +4,11 @@ import Card from "./Card";
 
 interface CardListProps {
   currentIndex: number;
+  vh: number;
 }
 
 const CardListBlock = styled.div<CardListProps>`
-  width: 100vw;
-  height: 100vh;
+  height: ${({ vh }) => `calc(${vh}px * 100 - 120px)`};
   position: fixed;
   top: 120px;
   left: calc((100vw - 300px) / 2 - 0px);
@@ -102,29 +102,35 @@ export default function CardList({ documents }: any) {
   // }, [mouseUpClientX]);
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as Element;
+    console.log(target.tagName);
     const width = window.innerWidth;
     const value = e.clientX - width / 2;
-    if (value >= 0) {
-      if (value >= 320) {
+    if (target.tagName === "DIV") {
+      if (value >= 0) {
+        if (value >= 320) {
+          handleNextBtn();
+        }
         handleNextBtn();
-      }
-      handleNextBtn();
-    } else if (value < 0) {
-      if (value <= -320) {
+      } else if (value < 0) {
+        if (value <= -320) {
+          handlePrevBtn();
+        }
         handlePrevBtn();
       }
-      handlePrevBtn();
     }
   };
 
   return (
     <CardListBlock
+      id="CardListBlock"
       currentIndex={currentIndex}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       // onMouseDown={onMouseDown}
       // onMouseUp={onMouseUp}
       onClick={onClick}
+      vh={vh}
     >
       <Card vh={vh} />
       {documents &&

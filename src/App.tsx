@@ -4,13 +4,6 @@ import { useCollection } from "./hooks/useCollection";
 import CardList from "./components/CardList";
 
 const Main = styled.main`
-  padding: 60px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-
   /* -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;

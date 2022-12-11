@@ -5,6 +5,8 @@ interface IsCardBlock {
 }
 const CardBlock = styled.div<IsCardBlock>`
   width: 300px;
+  height: fit-content;
+  position: relative;
   .CardInner {
     width: 300px;
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
@@ -113,7 +115,7 @@ export default function Card({ doc, vh }: IsCard) {
   if (!doc)
     return (
       <CardBlock vh={vh}>
-        <div className="CardInner"></div>
+        <section className="CardInner"></section>
       </CardBlock>
     );
 
@@ -128,11 +130,11 @@ export default function Card({ doc, vh }: IsCard) {
 
   return (
     <CardBlock vh={vh}>
-      <div className="CardInner">
+      <section className="CardInner">
         <div className="ImageWrapper">
           <img src={doc.url} alt="Album Cover" />
         </div>
-        <div className="ContentWrapper">
+        <article className="ContentWrapper">
           <h3>
             {doc.title} | {doc.content.length}
           </h3>
@@ -151,8 +153,8 @@ export default function Card({ doc, vh }: IsCard) {
               })}
           </ul>
           <p className="VocalOnly">{vocals.join(", ")}</p>
-        </div>
-      </div>
+        </article>
+      </section>
     </CardBlock>
   );
 }
