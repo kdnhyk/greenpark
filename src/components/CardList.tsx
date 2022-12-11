@@ -8,8 +8,9 @@ interface CardListProps {
 
 const CardListBlock = styled.div<CardListProps>`
   width: 100vw;
+  height: 100vh;
   position: fixed;
-  top: 60px;
+  top: 120px;
   left: calc((100vw - 300px) / 2 - 0px);
   display: flex;
   flex-direction: row;
@@ -31,6 +32,8 @@ const CurrnetIndexBlock = styled.div`
 `;
 
 export default function CardList({ documents }: any) {
+  const vh = window.innerHeight * 0.01;
+
   const [maxLength, setMaxLength] = useState<number | undefined>();
   let index = 1;
   useEffect(() => {
@@ -61,13 +64,13 @@ export default function CardList({ documents }: any) {
 
   const handleNextBtn = () => {
     console.log("prevIndex:" + currentIndex);
-    if (currentIndex === maxLength) return;
+    if (maxLength && currentIndex >= maxLength) return;
     setCurrentIndex((prev) => prev + 1);
   };
 
   const handlePrevBtn = () => {
     console.log("prevIndex:" + currentIndex);
-    if (currentIndex === 1) return;
+    if (maxLength && currentIndex <= 1) return;
     setCurrentIndex((prev) => prev - 1);
   };
 
@@ -100,9 +103,16 @@ export default function CardList({ documents }: any) {
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = window.innerWidth;
-    if (e.clientX - width / 2 >= 150) {
+    const value = e.clientX - width / 2;
+    if (value >= 0) {
+      if (value >= 320) {
+        handleNextBtn();
+      }
       handleNextBtn();
-    } else if (e.clientX - width / 2 <= -150) {
+    } else if (value < 0) {
+      if (value <= -320) {
+        handlePrevBtn();
+      }
       handlePrevBtn();
     }
   };
@@ -116,12 +126,12 @@ export default function CardList({ documents }: any) {
       // onMouseUp={onMouseUp}
       onClick={onClick}
     >
-      <Card />
+      <Card vh={vh} />
       {documents &&
         documents.map((doc: any) => {
-          return <Card key={index++} doc={doc} />;
+          return <Card key={index++} doc={doc} vh={vh} />;
         })}
-      <Card />
+      <Card vh={vh} />
       <CurrnetIndexBlock>
         {/* <p>
           {currentIndex}/{maxLength}

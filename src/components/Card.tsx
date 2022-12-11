@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-const CardBlock = styled.div`
+interface IsCardBlock {
+  vh: number;
+}
+const CardBlock = styled.div<IsCardBlock>`
   width: 300px;
   .CardInner {
     width: 300px;
@@ -26,16 +29,24 @@ const CardBlock = styled.div`
       }
     }
     .ContentWrapper {
-      height: calc(100vh - 460px);
+      height: fit-content;
+      max-height: ${({ vh }) => `calc(${vh}px * 100 - 440px)`};
       background: rgba(20, 20, 20, 0.5);
-      padding: 12px 20px 20px 20px;
+      padding: 12px 20px 12px 20px;
       border-radius: 0 0 16px 16px;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
       /* -ms-overflow-style: none;
       &::-webkit-scrollbar {
         display: none;
       } */
+      &:hover {
+        ul {
+          display: block;
+        }
+        p {
+          display: none;
+        }
+      }
       h3 {
         color: white;
         margin-bottom: 8px;
@@ -46,8 +57,13 @@ const CardBlock = styled.div`
         }
       }
       ul {
+        display: none;
+
         list-style: none;
         padding: 0;
+
+        max-height: ${({ vh }) => `calc(${vh}px * 100 - 504px)`};
+        overflow-y: auto;
         li {
           color: #e6e6e6;
           margin-bottom: 2px;
@@ -62,6 +78,16 @@ const CardBlock = styled.div`
             overflow: hidden;
             text-overflow: ellipsis;
           }
+        }
+      }
+      p {
+        color: #e6e6e6;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: auto;
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar {
+          display: none;
         }
       }
     }
@@ -80,18 +106,28 @@ interface IsAlbum {
 }
 interface IsCard {
   doc?: IsAlbum;
+  vh: number;
 }
 
-export default function Card({ doc }: IsCard) {
+export default function Card({ doc, vh }: IsCard) {
   if (!doc)
     return (
-      <CardBlock>
+      <CardBlock vh={vh}>
         <div className="CardInner"></div>
       </CardBlock>
     );
 
+  const arr: string[] = [];
+  doc.content
+    .slice(0)
+    .reverse()
+    .forEach((element) => {
+      arr.push(element.vocal);
+    });
+  const vocals = Array.from(new Set(arr));
+
   return (
-    <CardBlock>
+    <CardBlock vh={vh}>
       <div className="CardInner">
         <div className="ImageWrapper">
           <img src={doc.url} alt="Album Cover" />
@@ -114,6 +150,7 @@ export default function Card({ doc }: IsCard) {
                 );
               })}
           </ul>
+          <p className="VocalOnly">{vocals.join(", ")}</p>
         </div>
       </div>
     </CardBlock>
