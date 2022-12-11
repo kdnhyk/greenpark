@@ -11,14 +11,15 @@ const CardListBlock = styled.div<CardListProps>`
   height: 560px;
   position: fixed;
   top: 60px;
-  left: calc((100vw - 300px) / 2 - 40px);
+  left: calc((100vw - 300px) / 2 - 0px);
   display: flex;
   flex-direction: row;
   gap: 20px;
-  margin-left: 40px;
 
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 320}px)`};
-  transition: all 0.3s ease-in-out;
+  margin-left: ${({ currentIndex }) => `-${currentIndex * 320}px`};
+  /* transform: ${({ currentIndex }) =>
+    `translateX(-${currentIndex * 320}px)`}; */
+  transition: margin 0.3s ease-in-out;
 `;
 
 export default function CardList({ documents }: any) {
@@ -62,11 +63,21 @@ export default function CardList({ documents }: any) {
     setCurrentIndex((prev) => prev - 1);
   };
 
+  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const width = window.innerWidth;
+    if (e.clientX - width / 2 >= 160) {
+      handleNextBtn();
+    } else if (e.clientX - width / 2 <= -160) {
+      handlePrevBtn();
+    }
+  };
+
   return (
     <CardListBlock
       currentIndex={currentIndex}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
+      onClick={onClick}
     >
       <Card />
       {documents &&

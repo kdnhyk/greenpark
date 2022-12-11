@@ -23,9 +23,10 @@ const CardBlock = styled.div`
     .ContentWrapper {
       height: calc(100vh - 440px);
       background: rgba(20, 20, 20, 0.5);
-      padding: 20px;
+      padding: 10px 20px 20px 20px;
       border-radius: 0 0 16px 16px;
       overflow-y: auto;
+      overflow-x: hidden;
       h3 {
         margin-bottom: 10px;
       }
@@ -36,6 +37,7 @@ const CardBlock = styled.div`
           color: #bfbfbf;
           margin-bottom: 2px;
           a {
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

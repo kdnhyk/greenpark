@@ -16,7 +16,7 @@ export const useCollection = (transaction: string) => {
   const q = query(
     collection(appFireStore, transaction),
     // where("isViewd", "==", true),
-    orderBy("createdTime"),
+    orderBy("createdTime", "desc"),
     limit(10)
   );
 
