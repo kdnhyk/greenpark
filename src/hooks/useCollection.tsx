@@ -16,8 +16,8 @@ export const useCollection = (transaction: string) => {
   const q = query(
     collection(appFireStore, transaction),
     // where("isViewd", "==", true),
-    orderBy("createdTime", "desc"),
-    limit(10)
+    orderBy("createdTime", "desc")
+    // limit(10)
   );
 
   useEffect(() => {
