@@ -25,6 +25,7 @@ const CardBlock = styled.div`
       background: rgba(20, 20, 20, 0.5);
       padding: 20px;
       border-radius: 0 0 16px 16px;
+      overflow-y: auto;
       h3 {
         margin-bottom: 10px;
       }
@@ -33,6 +34,12 @@ const CardBlock = styled.div`
         padding: 0;
         li {
           color: #bfbfbf;
+          margin-bottom: 2px;
+          a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
       }
     }
@@ -68,7 +75,9 @@ export default function Card({ doc }: IsCard) {
           <img src={doc.url} alt="Album Cover" />
         </div>
         <div className="ContentWrapper">
-          <h3>{doc.title}</h3>
+          <h3>
+            {doc.title} | {doc.content.length}
+          </h3>
           <ul>
             {doc.content.map((con: any) => {
               return (
