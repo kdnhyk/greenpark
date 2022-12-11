@@ -35,6 +35,18 @@ export default function CardList({ documents }: any) {
   const [tochedX, setTochedX] = useState(0);
   const [tochedY, setTochedY] = useState(0);
 
+  const handleNextBtn = () => {
+    console.log("prevIndex:" + currentIndex);
+    if (currentIndex === maxLength) return;
+    setCurrentIndex((prev) => prev + 1);
+  };
+
+  const handlePrevBtn = () => {
+    console.log("prevIndex:" + currentIndex);
+    if (currentIndex === 1) return;
+    setCurrentIndex((prev) => prev - 1);
+  };
+
   const onTouchStart = (e: React.TouchEvent) => {
     setTochedX(e.changedTouches[0].pageX);
     setTochedY(e.changedTouches[0].pageY);
@@ -78,26 +90,14 @@ export default function CardList({ documents }: any) {
     }
   }, [mouseUpClientX]);
 
-  const handleNextBtn = () => {
-    console.log("prevIndex:" + currentIndex);
-    if (currentIndex === maxLength) return;
-    setCurrentIndex((prev) => prev + 1);
-  };
-
-  const handlePrevBtn = () => {
-    console.log("prevIndex:" + currentIndex);
-    if (currentIndex === 1) return;
-    setCurrentIndex((prev) => prev - 1);
-  };
-
-  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const width = window.innerWidth;
-    if (e.clientX - width / 2 >= 150) {
-      handleNextBtn();
-    } else if (e.clientX - width / 2 <= -150) {
-      handlePrevBtn();
-    }
-  };
+  // const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   const width = window.innerWidth;
+  //   if (e.clientX - width / 2 >= 150) {
+  //     handleNextBtn();
+  //   } else if (e.clientX - width / 2 <= -150) {
+  //     handlePrevBtn();
+  //   }
+  // };
 
   return (
     <CardListBlock
@@ -106,7 +106,7 @@ export default function CardList({ documents }: any) {
       onTouchEnd={onTouchEnd}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      onClick={onClick}
+      // onClick={onClick}
     >
       <Card />
       {documents &&
