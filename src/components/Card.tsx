@@ -145,7 +145,7 @@ export default function Card({ doc, vh }: IsCard) {
               .map((con: any) => {
                 return (
                   <li key={con.title}>
-                    <a href={con.url}>
+                    <a href={con.url} target="_blank" rel="noreferrer">
                       {con.title} - {con.vocal}
                     </a>
                   </li>

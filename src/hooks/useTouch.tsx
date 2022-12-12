@@ -4,7 +4,6 @@ export const useTouch = (
   handleNextBtn: () => void,
   handlePrevBtn: () => void
 ) => {
-  console.log("useTouch update");
   const [tochedX, setTochedX] = useState(0);
   const [tochedY, setTochedY] = useState(0);
 

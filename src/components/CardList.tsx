@@ -33,7 +33,6 @@ const CurrnetIndexBlock = styled.div`
 `;
 
 export default function CardList({ documents }: any) {
-  console.log("CardList update");
   const vh = useMemo(() => window.innerHeight * 0.01, []);
   let index = useMemo(() => 1, []);
 
@@ -46,13 +45,11 @@ export default function CardList({ documents }: any) {
 
   const [currentIndex, setCurrentIndex] = useState(1);
   const handleNextBtn = () => {
-    console.log("prevIndex:" + currentIndex);
     if (maxLength && currentIndex >= maxLength) return;
     setCurrentIndex((prev) => prev + 1);
   };
 
   const handlePrevBtn = () => {
-    console.log("prevIndex:" + currentIndex);
     if (maxLength && currentIndex <= 1) return;
     setCurrentIndex((prev) => prev - 1);
   };
@@ -88,7 +85,7 @@ export default function CardList({ documents }: any) {
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as Element;
-    console.log(target.tagName);
+    // console.log(target.tagName);
     const width = window.innerWidth;
     const value = e.clientX - width / 2;
     if (target.tagName === "DIV") {
