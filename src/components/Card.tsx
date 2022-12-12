@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface IsCardBlock {
@@ -15,7 +16,6 @@ const CardBlock = styled.div<IsCardBlock>`
       width: 300px;
       height: 300px;
       border-radius: 16px 16px 0 0;
-
       // 쌓임 맥락 issue
       isolation: isolate;
       overflow: hidden;
@@ -60,15 +60,11 @@ const CardBlock = styled.div<IsCardBlock>`
       }
       ul {
         display: none;
-
         list-style: none;
-        padding: 0;
-
         max-height: ${({ vh }) => `calc(${vh}px * 100 - 504px)`};
         overflow-y: auto;
         li {
           color: #e6e6e6;
-          margin-bottom: 2px;
           overflow-x: auto;
           -ms-overflow-style: none;
           &::-webkit-scrollbar {
@@ -112,21 +108,25 @@ interface IsCard {
 }
 
 export default function Card({ doc, vh }: IsCard) {
+  const [vocals, setVocals] = useState<string[]>([]);
+  useEffect(() => {
+    const arr: string[] = [];
+    doc?.content
+      .slice(0)
+      .reverse()
+      .forEach((element) => {
+        arr.push(element.vocal);
+      });
+    setVocals(Array.from(new Set(arr)));
+    console.log("Vocals update");
+  }, [doc?.content]);
+
   if (!doc)
     return (
       <CardBlock vh={vh}>
         <section className="CardInner"></section>
       </CardBlock>
     );
-
-  const arr: string[] = [];
-  doc.content
-    .slice(0)
-    .reverse()
-    .forEach((element) => {
-      arr.push(element.vocal);
-    });
-  const vocals = Array.from(new Set(arr));
 
   return (
     <CardBlock vh={vh}>

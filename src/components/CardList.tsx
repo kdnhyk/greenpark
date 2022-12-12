@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "./Card";
+import { useTouch } from "../hooks/useTouch";
 
 interface CardListProps {
   currentIndex: number;
@@ -32,10 +33,11 @@ const CurrnetIndexBlock = styled.div`
 `;
 
 export default function CardList({ documents }: any) {
-  const vh = window.innerHeight * 0.01;
+  console.log("CardList update");
+  const vh = useMemo(() => window.innerHeight * 0.01, []);
+  let index = useMemo(() => 1, []);
 
   const [maxLength, setMaxLength] = useState<number | undefined>();
-  let index = 1;
   useEffect(() => {
     if (!documents) return;
     setMaxLength(documents.length);
@@ -43,25 +45,6 @@ export default function CardList({ documents }: any) {
   }, [documents, maxLength]);
 
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [tochedX, setTochedX] = useState(0);
-  const [tochedY, setTochedY] = useState(0);
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTochedX(e.changedTouches[0].pageX);
-    setTochedY(e.changedTouches[0].pageY);
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const distanceX = tochedX - e.changedTouches[0].pageX;
-    const distanceY = tochedY - e.changedTouches[0].pageY;
-    const vector = Math.abs(distanceX / distanceY);
-
-    if (distanceX > 10 && vector > 2) {
-      handleNextBtn();
-    } else if (distanceX < -10 && vector > 2) {
-      handlePrevBtn();
-    }
-  };
-
   const handleNextBtn = () => {
     console.log("prevIndex:" + currentIndex);
     if (maxLength && currentIndex >= maxLength) return;
@@ -73,6 +56,8 @@ export default function CardList({ documents }: any) {
     if (maxLength && currentIndex <= 1) return;
     setCurrentIndex((prev) => prev - 1);
   };
+
+  const { onTouchStart, onTouchEnd } = useTouch(handleNextBtn, handlePrevBtn);
 
   // const [mouseDownClientX, setMouseDownClientX] = useState(0);
   // const [mouseDownClientY, setMouseDownClientY] = useState(0);

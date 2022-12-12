@@ -15,9 +15,9 @@ export const useCollection = (transaction: string) => {
 
   const q = query(
     collection(appFireStore, transaction),
-    // where("isViewd", "==", true),
+    where("isVisible", "==", true),
     orderBy("createdTime", "desc")
-    // limit(10)
+    // limit(5)
   );
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export const useCollection = (transaction: string) => {
       });
       setDocuments(result);
     });
+    // 의존 배열에 q 추가 금지
   }, []);
 
   return { documents };
